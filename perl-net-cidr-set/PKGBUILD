@@ -1,0 +1,24 @@
+pkgname=perl-net-cidr-set
+_realname=Net-CIDR-Set
+pkgver=0.13
+pkgrel=1
+pkgdesc="Perl extension for Manipulate sets of IP addresses"
+arch=('any')
+license=('PerlArtistic')
+url="https://search.cpan.org/dist/${_realname}/"
+depends=('perl>=5.10.0')
+options=(!emptydirs)
+source=(https://search.cpan.org/CPAN/authors/id/A/AN/ANDYA/${_realname}-${pkgver}.tar.gz)
+md5sums=('a6ed9b51b106bf771a547ff38781f6b5')
+
+build() {
+  cd ${srcdir}/${_realname}-${pkgver}
+  # install module in vendor directories.
+  PERL_MM_USE_DEFAULT=1 perl Build.PL INSTALLDIRS=vendor
+  ./Build
+}
+
+package() {
+  cd ${srcdir}/${_realname}-${pkgver}
+  ./Build install DESTDIR=${pkgdir}
+}

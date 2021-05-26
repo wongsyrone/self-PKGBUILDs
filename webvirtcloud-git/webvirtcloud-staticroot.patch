@@ -1,0 +1,13 @@
+diff --git a/webvirtcloud/settings.py.template b/webvirtcloud/settings.py.template
+index 37ca195..eea167a 100644
+--- a/webvirtcloud/settings.py.template
++++ b/webvirtcloud/settings.py.template
+@@ -111,6 +111,8 @@ USE_L10N = True
+ 
+ USE_TZ = True
+ 
++STATIC_ROOT = "/usr/lib/webvirtcloud/"
++
+ STATIC_URL = "/static/"
+ 
+ STATICFILES_DIRS = [

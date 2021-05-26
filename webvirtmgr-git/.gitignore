@@ -1,0 +1,8 @@
+*.pkg.tar.gz
+webvirtmgr/
+pkg/
+src/
+*.pkg.tar.*
+*.src.tar.*
+*.bin.tar.*
+SOURCE

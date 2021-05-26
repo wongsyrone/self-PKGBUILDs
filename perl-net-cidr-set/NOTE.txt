@@ -1,0 +1,8 @@
+[admin@will-xxhsyb-linux Net-CIDR-Set-0.13]$ sudo ./Build install
+Building Net-CIDR-Set
+Installing /usr/share/perl5/site_perl/Net/CIDR/Set.pm
+Installing /usr/share/perl5/site_perl/Net/CIDR/Set/IPv4.pm
+Installing /usr/share/perl5/site_perl/Net/CIDR/Set/IPv6.pm
+Installing /usr/share/man/man3/Net::CIDR::Set::IPv6.3pm
+Installing /usr/share/man/man3/Net::CIDR::Set::IPv4.3pm
+Installing /usr/share/man/man3/Net::CIDR::Set.3pm

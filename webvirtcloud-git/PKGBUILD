@@ -1,0 +1,63 @@
+ # Maintainer: StoneCold <forumi0721[at]gmail[dot]com>
+
+_gitname="webvirtcloud"
+pkgname=("${_gitname}-git")
+pkgver=20210425.1008.a20fa8e
+pkgrel=1
+pkgdesc="WebVirtCloud is virtualization web interface for admins and users"
+arch=("x86_64")
+url="https://github.com/retspen/webvirtcloud"
+license=("Apache")
+depends=("libvirt" "libvirt-python" "qemu-headless" "dnsmasq" "bridge-utils" "ebtables" "dmidecode" "python" "supervisor" "websockify" "python-django" "gunicorn" "python-lxml")
+makedepends=("git")
+provides=("webvirtcloud" "webvirtcloud-git")
+conflicts=("webvirtcloud" "webvirtcloud-git" "webvirtmgr" "webvirtmgr-git")
+options=('!strip' 'emptydirs')
+install="${pkgname}.install"
+source=("${_gitname}::git+https://github.com/retspen/webvirtcloud.git"
+        "webvirtcloud.ini"
+        "webvirtcloud.nginx.conf.sample"
+        "webvirtcloud-staticroot.patch")
+md5sums=("SKIP"
+         "SKIP"
+         "SKIP"
+         "SKIP")
+
+pkgver() {
+	cd "${srcdir}/${_gitname}"
+	echo "$(git log -1 --format="%cd" --date=short | sed "s/-//g").$(git rev-list --count HEAD).$(git rev-parse --short HEAD)"
+}
+
+generate_secret_key() {
+  python - <<END
+import random
+print(''.join(random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)') for i in range(50)))
+END
+}
+
+package() {
+	outputdir="${pkgdir}/usr/lib/webvirtcloud"
+	install -dm0755 "${outputdir}" "${pkgdir}/var/lib/webvirtcloud"
+	
+	cd "${srcdir}/webvirtcloud"
+	patch -p1 < "${srcdir}/webvirtcloud-staticroot.patch"
+
+	cd "${outputdir}"
+	PIP_CONFIG_FILE=/dev/null pip install -r "${srcdir}/webvirtcloud/conf/requirements.txt" -t "${outputdir}/lib"
+
+	cp -r "${srcdir}/webvirtcloud" "${pkgdir}/usr/lib"
+	rm -rf "${pkgdir}/usr/lib/webvirtcloud/.git"
+
+	cd "${pkgdir}/usr/lib/webvirtcloud"
+
+	cp "${srcdir}/webvirtcloud/webvirtcloud/settings.py.template" "${outputdir}/webvirtcloud/settings.py"
+        secret_key=$(generate_secret_key)
+        echo "* Secret for Django generated: $secret_key"
+        secret_key_escape="$(echo -n "$secret_key"|sed -e 's/[](){}<>=:\!\?\+\|\/\&$*.^[]/\\&/g')"
+        sed -i "s|^\\(SECRET_KEY = \\).*|\\1\'$secret_key_escape\'|" "${outputdir}/webvirtcloud/settings.py"
+	install -dm0755 "${pkgdir}/etc/supervisor.d"
+	install -Dm0644 "${srcdir}/webvirtcloud.ini" "${pkgdir}/etc/supervisor.d/webvirtcloud.ini"
+	install -dm0755 "${pkgdir}/etc/nginx/conf.d"
+	install -Dm0644 "${srcdir}/webvirtcloud.nginx.conf.sample" "${pkgdir}/etc/nginx/conf.d/webvirtcloud.nginx.conf.sample"
+}
+
