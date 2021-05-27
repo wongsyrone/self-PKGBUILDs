@@ -1,5 +1,0 @@
-do{ my $x = {
-       'Net-CIDR-Set-*' => 1,
-       'blib' => 1
-     };
-$x; }

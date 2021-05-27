@@ -42,6 +42,9 @@ package() {
 	cd "${srcdir}/webvirtcloud"
 	patch -p1 < "${srcdir}/webvirtcloud-staticroot.patch"
 
+	echo "* remove libvirt-python dependency in requirements.txt as it conflicts with the one in Archlinux"
+	sed -ie "/libvirt-python/d" "${srcdir}/webvirtcloud/conf/requirements.txt"
+
 	cd "${outputdir}"
 	PIP_CONFIG_FILE=/dev/null pip install -r "${srcdir}/webvirtcloud/conf/requirements.txt" -t "${outputdir}/lib"
 
