@@ -2,8 +2,8 @@
 
 _gitname="webvirtcloud"
 pkgname=("${_gitname}-git")
-pkgver=20210425.1008.a20fa8e
-pkgrel=2
+pkgver=20210615.1029.375479c
+pkgrel=1
 pkgdesc="WebVirtCloud is virtualization web interface for admins and users"
 arch=("x86_64")
 url="https://github.com/retspen/webvirtcloud"
