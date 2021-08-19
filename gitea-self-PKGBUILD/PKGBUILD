@@ -3,7 +3,7 @@
 # Contributor: Frederik Schwan <frederik dot schwan at linux dot com>
 
 pkgname=gitea
-pkgver=1.14.4
+pkgver=v1.15.0.rc3.r0.g1a2256bf44
 pkgrel=1
 pkgdesc="Painless self-hosted Git service. Community managed fork of Gogs."
 arch=(x86_64)
@@ -21,7 +21,7 @@ optdepends=(
   'sqlite: SQLite support'
 )
 backup=('etc/gitea/app.ini')
-_tag=d0b8e3c8e1c6647f8bfa52ad6009aaa36398139c # git rev-parse v${pkgver}
+_tag=1a2256bf4443baabe0b2009ec752fae7276f3db2 # git rev-parse v${pkgver}
 source=("git+https://github.com/go-gitea/gitea.git#tag=${_tag}"
         gitea.tmpfiles
         gitea.service
@@ -29,9 +29,9 @@ source=("git+https://github.com/go-gitea/gitea.git#tag=${_tag}"
         gitea-arch-defaults.patch)
 sha256sums=('SKIP'
             '1521fd7edc3830c695698ffe9835709f1408040b5ec989f07410972c894fa8ba'
-            'd4e6b0dc3d5b40c3f1254b5a8bc8f62e0b1126e0559b1f024b3ebf0ccda91af8'
+            '0c4ebf8a458eee277740a5febb8b976a8a63e83679587410c1c0801efa046545'
             '7e7b798b8ce035c1fb55993ece41c5efb6cad5922708866804fa50ada0cf9fa5'
-            '9209c385a59cef83fd4c526b445de998c7b30c345c0b6101570142b4ce29ee1f')
+            'f8ce6dd8c839e53371158b5d831edcc9e4cd617359318cab59d6c7bd36926eea')
 
 prepare() {
   cd ${pkgname}
@@ -42,8 +42,8 @@ prepare() {
 }
 
 pkgver() {
-  cd ${pkgname}
-  git describe --tags | sed 's/^v//'
+  cd "$pkgname"
+  git describe --long | sed 's/\([^-]*-g\)/r\1/;s/-/./g'
 }
 
 build() {
