@@ -2,14 +2,14 @@
 
 _gitname="webvirtcloud"
 pkgname=("${_gitname}-git")
-pkgver=20210806.1038.8a81a83
+pkgver=20220908.1149.2dc4048
 pkgrel=1
 pkgdesc="WebVirtCloud is virtualization web interface for admins and users"
 arch=("x86_64")
 url="https://github.com/retspen/webvirtcloud"
 license=("Apache")
 # libguestfs contains Python bindings
-depends=("libvirt" "libvirt-python" "qemu-headless" "dnsmasq" "bridge-utils" "ebtables" "dmidecode" "python" "supervisor" "websockify" "python-django" "gunicorn" "python-lxml" "libguestfs")
+depends=("libvirt" "libvirt-python" "qemu-base" "dnsmasq" "bridge-utils" "iptables-nft" "dmidecode" "python" "supervisor" "websockify" "python-django" "gunicorn" "python-lxml" "libguestfs")
 makedepends=("git")
 provides=("webvirtcloud" "webvirtcloud-git")
 conflicts=("webvirtcloud" "webvirtcloud-git" "webvirtmgr" "webvirtmgr-git")

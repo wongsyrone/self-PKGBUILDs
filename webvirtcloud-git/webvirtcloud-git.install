@@ -4,9 +4,9 @@ post_install() {
   getent group "${login}" > /dev/null || groupadd -r "${login}" > /dev/null
   getent passwd "${login}" > /dev/null || useradd -r -g "${login}" -d "/var/lib/${login}" "${login}" -m > /dev/null
 
-  PYTHONPATH=/usr/lib/webvirtcloud/lib /usr/bin/python /usr/lib/webvirtcloud/manage.py migrate
+  PYTHONPATH=/usr/lib/webvirtcloud/lib /usr/bin/python /usr/lib/webvirtcloud/manage.py makemigrations --merge
   chown webvirtcloud:webvirtcloud /usr/lib/webvirtcloud/db.sqlite3 /usr/lib/webvirtcloud
-  PYTHONPATH=/usr/lib/webvirtcloud/lib /usr/bin/python /usr/lib/webvirtcloud/manage.py makemigrations
+  PYTHONPATH=/usr/lib/webvirtcloud/lib /usr/bin/python /usr/lib/webvirtcloud/manage.py migrate
   cat <<- EOF
   	If you want to change admin, you need to run: 
     # PYTHONPATH=/usr/lib/webvirtcloud/lib /usr/bin/python /usr/lib/webvirtcloud/manage.py createsuperuser
@@ -23,6 +23,7 @@ EOF
 }
 
 post_upgrade() {
+  PYTHONPATH=/usr/lib/webvirtcloud/lib /usr/bin/python /usr/lib/webvirtcloud/manage.py makemigrations --merge
   PYTHONPATH=/usr/lib/webvirtcloud/lib /usr/bin/python /usr/lib/webvirtcloud/manage.py migrate
   chown webvirtcloud:webvirtcloud /usr/lib/webvirtcloud/db.sqlite3 /usr/lib/webvirtcloud
 }
